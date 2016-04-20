@@ -92,9 +92,9 @@ public class AcquisitionFeedServlet
     super.init( config );
     ds = new DriverManagerDataSource();
     ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
-    ds.setUrl( "jdbc:oracle:thin:@//eliot.library.ucla.edu:1521/VGER.VGER" );
-    ds.setUsername( "UCLA_PREADDB" );
-    ds.setPassword( "UCLA_PREADDB" );
+    ds.setUrl( "url" );
+    ds.setUsername( "user" );
+    ds.setPassword( "pwd" );
     _defaultFeedType = 
         getServletConfig().getInitParameter( DEFAULT_FEED_TYPE );
     _defaultFeedType = 
