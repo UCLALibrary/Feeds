@@ -55,20 +55,3 @@ public class FeedList
       .replaceAll( "\\(a", "\\(A" ).replaceAll( "\\(w", "\\(W" );
   }
 }
-//subject.replaceAll("'","0").replaceAll(",","1").replaceAll("/","2").replaceAll("\\(","3").replaceAll("\\)","4").replaceAll(" ", "_").toLowerCase().concat(".xml")
-   //import org.springframework.jdbc.core.JdbcTemplate;
-   //import org.springframework.jdbc.datasource.DriverManagerDataSource;
-    //private DriverManagerDataSource ds;
-    //private JdbcTemplate sql;
-     /*ds = new DriverManagerDataSource();
-     ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
-     ds.setUrl( "jdbc:oracle:thin:@//eliot.library.ucla.edu:1521/VGER.VGER" );
-     ds.setUsername( "UCLA_PREADDB" );
-     ds.setPassword( "UCLA_PREADDB" );*/
-      //capitalize( contents[i].replaceAll("0","'").replaceAll("1",",").
-       /*private String capitalize(String input)
-       {
-         sql = new JdbcTemplate( ds );
-         
-         return sql.queryForObject("SELECT INITCAP(?) from dual", new Object[]{input}, String.class).toString();    
-       }*/
