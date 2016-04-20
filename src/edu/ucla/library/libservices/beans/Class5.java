@@ -45,9 +45,9 @@ public class Class5
   {
     ds = new DriverManagerDataSource();
     ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
-    ds.setUrl( "jdbc:oracle:thin:@//eliot.library.ucla.edu:1521/VGER.VGER" );
-    ds.setUsername( "VGER_SUPPORT" );
-    ds.setPassword( "VGER_SUPPORT_PWD" );
+    ds.setUrl( "url" );
+    ds.setUsername( "user" );
+    ds.setPassword( "pwd" );
     
     sql = new JdbcTemplate(ds);
     results = sql.query(
