@@ -43,9 +43,9 @@ public class Class2
   {
     ds = new DriverManagerDataSource();
     ds.setDriverClassName( "oracle.jdbc.OracleDriver" );
-    ds.setUrl( "jdbc:oracle:thin:@ils-db-prod.library.ucla.edu:1521:VGER" );
-    ds.setUsername( "VGER_SUPPORT" );
-    ds.setPassword( "VGER_SUPPORT_PWD" );
+    ds.setUrl( "url" );
+    ds.setUsername( "user" );
+    ds.setPassword( "pwd" );
 
     File outFile;
     WireFeedOutput output;
