@@ -1,12 +1,7 @@
---------------------------------------------------------
---  File created - Wednesday-April-20-2016   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for View UCLADB_RSS_LAW2
---------------------------------------------------------
-
-  CREATE OR REPLACE FORCE VIEW "VGER_SUPPORT"."UCLADB_RSS_LAW2" ("LOCATION", "LOCATION_CODE", "CALL_NO_TYPE", "CALL_NUMBER", "SORT_CALL_NUMBER", "ADDED_DATE", "BIB_ID", "LANGUAGE_CODE", "LANGUAGE", "EDITION", "IMPRINT", "SERIES", "AUTHOR", "TITLE", "PUB_YEAR", "BIB_SUBJECTS", "URL") AS 
-  WITH mfhds AS
+CREATE OR REPLACE VIEW vger_support.ucladb_rss_law2 (
+  location, location_code, call_no_type, call_number, sort_call_number, added_date, bib_id, language_code, language, edition, imprint, series, author, title, pub_year, bib_subjects, url
+) AS
+WITH mfhds AS
 (	
 	SELECT
 		mm.mfhd_id,
@@ -37,8 +32,7 @@
 			OR
 			mm.mfhd_id IN (SELECT ms1.record_id FROM vger_subfields.ucladb_mfhd_subfield ms1 inner join vger_subfields.ucladb_mfhd_subfield ms2 on ms1.record_id = ms2.record_id WHERE (ms1.tag = '852b' AND ms1.subfield = 'in') AND (ms2.tag = '852c' AND ms2.subfield like '%lw%'))
 		)
-		
-),
+), -- end of mfhds
 shelfready AS
 (
 	SELECT
@@ -59,8 +53,8 @@ shelfready AS
 	FROM 
 		ucladb.mfhd_master mm
 		INNER JOIN ucladb.mfhd_history mh ON mm.mfhd_id = mh.mfhd_id
-                INNER JOIN ucladb.MFHD_ITEM mi ON mm.mfhd_id = mi.mfhd_id
-                INNER JOIN ucladb.ITEM i ON mi.item_id = i.item_id
+    INNER JOIN ucladb.MFHD_ITEM mi ON mm.mfhd_id = mi.mfhd_id
+    INNER JOIN ucladb.ITEM i ON mi.item_id = i.item_id
 		INNER JOIN ucladb.location l ON mm.location_id = l.location_id
 		INNER JOIN ucladb.bib_mfhd bm ON mm.mfhd_id = bm.mfhd_id
 		INNER JOIN ucladb.bib_text bt ON bm.bib_id = bt.bib_id
@@ -72,7 +66,7 @@ shelfready AS
 			OR
 			mm.mfhd_id IN (SELECT ms1.record_id FROM vger_subfields.ucladb_mfhd_subfield ms1 inner join vger_subfields.ucladb_mfhd_subfield ms2 on ms1.record_id = ms2.record_id WHERE (ms1.tag = '852b' AND ms1.subfield = 'in') AND (ms2.tag = '852c' AND ms2.subfield like '%lw%'))
 		)
-)
+) -- end of shelfready
 SELECT DISTINCT
 	location,
 	location_code,
@@ -124,3 +118,5 @@ FROM
 WHERE
 	trunc(added_date) >= trunc(sysdate - 30)
 	--AND pub_year >= TO_NUMBER(TO_CHAR(sysdate - 730, 'YYYY'), '9999');
+;
+/
