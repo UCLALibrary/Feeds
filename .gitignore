@@ -1,0 +1,6 @@
+# Exclude binaries
+*.jar
+
+# Exclude connection info
+rss.properties
+
