@@ -28,9 +28,18 @@ WITH mfhds AS
 		mh.operator_id = 'uclaloader'
 		AND 
 		(
-			mm.mfhd_id IN (SELECT record_id FROM vger_subfields.ucladb_mfhd_subfield WHERE tag = '852b' AND subfield like '%lw%')
+			l.location_code like 'lw%'
 			OR
-			mm.mfhd_id IN (SELECT ms1.record_id FROM vger_subfields.ucladb_mfhd_subfield ms1 inner join vger_subfields.ucladb_mfhd_subfield ms2 on ms1.record_id = ms2.record_id WHERE (ms1.tag = '852b' AND ms1.subfield = 'in') AND (ms2.tag = '852c' AND ms2.subfield like '%lw%'))
+      (
+        l.location_code = 'in' 
+        and exists (
+          select *
+          from vger_subfields.ucladb_mfhd_subfield
+          where record_id = mm.mfhd_id
+          and tag = '852c'
+          and subfield like 'lw%'
+        )
+      )
 		)
 ), -- end of mfhds
 shelfready AS
@@ -62,9 +71,18 @@ shelfready AS
 		i.create_operator_id = 'promptcat'
 		AND 
 		(
-			mm.mfhd_id IN (SELECT record_id FROM vger_subfields.ucladb_mfhd_subfield WHERE tag = '852b' AND subfield like '%lw%')
+			l.location_code like 'lw%'
 			OR
-			mm.mfhd_id IN (SELECT ms1.record_id FROM vger_subfields.ucladb_mfhd_subfield ms1 inner join vger_subfields.ucladb_mfhd_subfield ms2 on ms1.record_id = ms2.record_id WHERE (ms1.tag = '852b' AND ms1.subfield = 'in') AND (ms2.tag = '852c' AND ms2.subfield like '%lw%'))
+      (
+        l.location_code = 'in' 
+        and exists (
+          select *
+          from vger_subfields.ucladb_mfhd_subfield
+          where record_id = mm.mfhd_id
+          and tag = '852c'
+          and subfield like 'lw%'
+        )
+      )
 		)
 ) -- end of shelfready
 SELECT DISTINCT
@@ -120,3 +138,4 @@ WHERE
 	--AND pub_year >= TO_NUMBER(TO_CHAR(sysdate - 730, 'YYYY'), '9999');
 ;
 /
+
