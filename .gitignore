@@ -4,3 +4,5 @@
 # Exclude connection info
 rss.properties
 
+# Exclude generated RSS feeds
+feeds
