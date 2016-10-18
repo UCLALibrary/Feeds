@@ -1,37 +1,38 @@
---------------------------------------------------------
---  File created - Monday-April-25-2016   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Function GET_SUBJECTS
---------------------------------------------------------
-
-  CREATE OR REPLACE FUNCTION "VGER_SUPPORT"."GET_SUBJECTS" 
+create or replace function vger_support.get_subjects
 (
-  p_bibid VGER_SUBFIELDS.UCLADB_BIB_SUBFIELD.RECORD_ID%TYPE
+  p_bib_id vger_subfields.ucladb_bib_subfield.record_id%type
 )
-RETURN NVARCHAR2 AS
-	TYPE cur_type IS REF CURSOR;
-	subjects_cur	cur_type;
-	delimiter		CHAR(1) := '|';
-	subjects		NVARCHAR2(4000) := '';
-	a_subject		NVARCHAR2(4000);
-BEGIN
-	OPEN subjects_cur FOR
-		'SELECT DISTINCT vger_subfields.GetFieldFromSubfields(record_id, field_seq) AS subject_field FROM vger_subfields.ucladb_bib_subfield WHERE record_id = :r AND (tag LIKE ''650%'' OR tag LIKE ''651%'') ORDER BY subject_field'
-		USING p_bibid;
-	subjects := '';
-	LOOP
-		FETCH subjects_cur INTO a_subject;
-		EXIT WHEN subjects_cur%NOTFOUND;
-
-		IF subjects_cur%ROWCOUNT > 1 THEN
-			subjects := subjects || delimiter;
-		END IF;
-		subjects := subjects || a_subject;
-	END LOOP;
-	CLOSE subjects_cur;
-	RETURN LTRIM(RTRIM(subjects));
-END;
- 
-
+return nvarchar2 as
+  type cur_type is ref cursor;
+  subjects_cur  cur_type;
+  delimiter char(1) := '|';
+  subjects  nvarchar2(2000) := '';
+  a_subject nvarchar2(2000);
+begin
+  open subjects_cur for
+    select distinct
+      vger_subfields.GetFieldFromSubfields(record_id, field_seq) as subject_field
+      from vger_subfields.ucladb_bib_subfield
+      where record_id = p_bib_id
+      and (tag like '650%' or tag like '651%')
+      order by subject_field;
+  
+  subjects := '';
+  loop
+    fetch subjects_cur into a_subject;
+    exit when subjects_cur%notfound;
+    
+    -- Bail out if concatenated string is getting too long
+    -- Limit is 2000 characters, since this is nvarchar2 and NLS_NCHAR_CHARACTERSET = AL16UTF16
+    -- Leave room for delimiter
+    exit when length(subjects) + length(a_subject) > 1999;
+    if subjects_cur%rowcount > 1 then
+      subjects := subjects || delimiter;
+    end if;
+    subjects := subjects || a_subject;
+  end loop;
+  close subjects_cur;
+  return ltrim(rtrim(subjects));
+end get_subjects;
 /
+
