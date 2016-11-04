@@ -1,24 +1,16 @@
---------------------------------------------------------
---  File created - Monday-April-25-2016   
---------------------------------------------------------
---------------------------------------------------------
---  DDL for Function GET_250B_TAG
---------------------------------------------------------
-
-  CREATE OR REPLACE FUNCTION "VGER_SUPPORT"."GET_250B_TAG" 
+create or replace function vger_support.get_250b_tag 
 (
-  p_bibid VGER_SUBFIELDS.UCLADB_BIB_SUBFIELD.RECORD_ID%TYPE
+  p_bibid vger_subfields.ucladb_bib_subfield.record_id%type
 )
-RETURN NVARCHAR2 AS
-	v_tag		NVARCHAR2(4000) := '';
-	v_empty		NVARCHAR2(4000) := '';
-BEGIN              
-	SELECT COALESCE(subfield, v_empty) INTO v_tag
-	FROM vger_subfields.ucladb_bib_subfield 
-	WHERE record_id = p_bibid AND tag = '250b';
-	
-	RETURN v_tag;
-END;
- 
-
+return nvarchar2 as
+  v_tag   nvarchar2(2000) := '';
+  v_empty nvarchar2(2000) := '';
+begin
+  select coalesce(subfield, v_empty) into v_tag
+  from vger_subfields.ucladb_bib_subfield
+  where record_id = p_bibid and tag = '250b'
+  and rownum < 2;
+  
+  return v_tag;
+end get_250b_tag;
 /
