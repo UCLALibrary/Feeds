@@ -34,10 +34,10 @@ WITH mfhds AS
         l.location_code = 'in' 
         and exists (
           select *
-          from vger_subfields.ucladb_mfhd_subfield
-          where record_id = mm.mfhd_id
-          and tag = '852c'
-          and subfield like 'lw%'
+          from vger_subfields.ucladb_bib_subfield
+          where record_id = bt.bib_id
+          and tag = '856x'
+          and subfield like 'UCLA Law%'
         )
       )
 		)
@@ -77,10 +77,10 @@ shelfready AS
         l.location_code = 'in' 
         and exists (
           select *
-          from vger_subfields.ucladb_mfhd_subfield
-          where record_id = mm.mfhd_id
-          and tag = '852c'
-          and subfield like 'lw%'
+          from vger_subfields.ucladb_bib_subfield
+          where record_id = bt.bib_id
+          and tag = '856x'
+          and subfield like 'UCLA Law%'
         )
       )
 		)
